@@ -1,0 +1,231 @@
+/* Wrapper ensures footer stays at bottom */
+.webdesigner-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #000; /* whole wrapper black */
+}
+
+/* Section with AI animated background */
+.webdesigner-section {
+  flex: 1;
+  padding: 60px 20px;
+  min-height: 100vh;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: #000; /* black base */
+}
+
+/* Background video */
+.webdesigner-section video.background-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Animated neon grid background - slightly brighter */
+.webdesigner-section::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image:
+    linear-gradient(90deg, rgba(0, 255, 200, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(0, 255, 200, 0.08) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: moveGridDiagonal 20s linear infinite;
+  z-index: 1;
+}
+
+/* Pulsing neon glow overlay */
+.webdesigner-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0,255,200,0.08), transparent 70%);
+  animation: pulseGlow 6s ease-in-out infinite;
+  z-index: 1;
+}
+
+/* Grid movement animation */
+@keyframes moveGridDiagonal {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-25px, -25px) rotate(5deg); }
+  50% { transform: translate(-50px, -50px) rotate(0deg); }
+  75% { transform: translate(-25px, -25px) rotate(-5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* Glow pulse animation */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+/* Text and content stay above animations */
+.webdesigner-title,
+.webdesigner-desc,
+.screenshot-grid {
+  position: relative;
+  z-index: 2; /* above video and overlays */
+  color: #33ffcc; /* softer neon */
+  text-shadow: 0 0 6px rgba(51, 255, 204, 0.5);
+}
+
+/* Title */
+.webdesigner-title {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(51, 255, 204, 0.5);
+}
+
+/* Description */
+.webdesigner-desc {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: #66ffe6;
+  text-shadow: 0 0 6px rgba(102, 255, 230, 0.4);
+}
+
+/* Screenshot grid */
+.screenshot-grid {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+/* Cards */
+.screenshot-card {
+  background: rgba(20, 20, 20, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 255, 200, 0.3);
+  box-shadow: 0 0 15px rgba(0, 255, 200, 0.2);
+  overflow: hidden;
+  width: 400px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0;
+  cursor: pointer; /* indicate clickable */
+}
+
+.screenshot-card:nth-child(1) { animation-delay: 0.2s; }
+.screenshot-card:nth-child(2) { animation-delay: 0.4s; }
+.screenshot-card:nth-child(3) { animation-delay: 0.6s; }
+
+/* Hover effect with neon glow */
+.screenshot-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 255, 200, 0.6), 0 0 50px rgba(0, 255, 200, 0.4);
+}
+
+/* Images */
+.screenshot-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+/* Card title */
+.screenshot-card h3 {
+  font-size: 1.2rem;
+  padding: 15px;
+  color: #00ffc8;
+  text-shadow: 0 0 6px rgba(0, 255, 200, 0.8);
+}
+
+/* ===== Fullscreen Image Viewer ===== */
+.fullscreen-viewer {
+  display: none; /* hidden by default */
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullscreen-viewer.active {
+  display: flex;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.fullscreen-viewer img {
+  max-width: 90%;
+  max-height: 90%;
+  border: 2px solid rgba(0, 255, 200, 0.5);
+  box-shadow: 0 0 30px rgba(0, 255, 200, 0.4);
+  border-radius: 8px;
+  animation: zoomIn 0.3s ease-in-out;
+}
+
+/* Close button */
+.fullscreen-viewer .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  color: #00ffc8;
+  cursor: pointer;
+  text-shadow: 0 0 10px rgba(0,255,200,0.8);
+  transition: transform 0.2s;
+}
+
+.fullscreen-viewer .close-btn:hover {
+  transform: scale(1.2);
+}
+
+/* Animations for fullscreen */
+@keyframes zoomIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .webdesigner-title {
+    font-size: 2rem;
+  }
+  .webdesigner-desc {
+    font-size: 1rem;
+    margin-bottom: 25px;
+  }
+  .screenshot-card {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .webdesigner-title {
+    font-size: 1.6rem;
+  }
+  .webdesigner-desc {
+    font-size: 0.9rem;
+  }
+  .screenshot-card img {
+    height: 160px;
+  }
+}
+
+/* Animation for card entry */
+@keyframes fadeInUp {
+  0% { transform: translateY(30px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
